@@ -42,29 +42,57 @@ def save_html_to_file(html_content, filename):
 
 # Функция для получения следующей ссылки
 def get_next_link(soup):
-    button = soup.find('a', class_='btn is-plain size-lg tz_cb tz_c5 tz_eb')
+    button = soup.find('a', class_='btn is-plain size-lg uy_bj uy_b3 uy_cb')#btn is-plain size-lg uf_cb uf_c5 uf_eb
     if button:
         return 'https://ranobelib.me' + button.get('href').split('?')[0]
     else:
         print('Элемент с указанным классом не найден.')
         return None
-
+'''
 # Функция для парсинга HTML и создания нового документа
 def create_result_html(tmp_file_name, title_name):
     with open(tmp_file_name, 'r', encoding='utf-8') as file:
         html_content = file.read()
 
     soup = BeautifulSoup(html_content, 'html.parser')
-    h1_tag = soup.find('h1', class_='la_cq')
-    div_content = soup.find('div', class_='text-content')
+    h1_tag = soup.find('h1', class_='le_cq')
+    div_content = soup.find('div', class_='le_i')
 
-    new_soup = BeautifulSoup('<html><head><title>Result</title></head><body></body></html>', 'html.parser')
-    new_soup.body.append(h1_tag)
-    new_soup.body.append(div_content)
+    new_soup = BeautifulSoup('<html><body></body></html>', 'html.parser')
+
+    # Проверяем, что h1_tag и div_content не равны None
+    if h1_tag is not None:
+        new_soup.body.append(h1_tag)
+    else:
+        print("h1 тег не найден.")
+
+    if div_content is not None:
+        new_soup.body.append(div_content)
+    else:
+        print("div с классом 'text-content' не найден.")
+
+    with open(title_name, 'w', encoding='utf-8') as file:
+        file.write(str(new_soup))'''
+
+#k6_i
+def create_result_html(tmp_file_name, title_name):
+    with open(tmp_file_name, 'r', encoding='utf-8') as file:
+        html_content = file.read()
+
+    soup = BeautifulSoup(html_content, 'html.parser')
+    div_content = soup.find('div', class_='k6_i')
+
+    new_soup = BeautifulSoup('<html><body></body></html>', 'html.parser')
+
+    if div_content is not None:
+        new_soup.body.append(div_content)
+    else:
+        print("div с классом 'text-content' не найден.")
 
     with open(title_name, 'a', encoding='utf-8') as file:
         file.write(str(new_soup))
-        
+
+    
 print("Предварителььная настройка завершена\n")
 
 # Основная логика
@@ -78,17 +106,19 @@ count_of_pgs = int(input("Введите число страниц, которы
 try:
     for _ in range(count_of_pgs):
         
-        print(f"\npage {_ + 1}/{count_of_pgs}")
         html_content = fetch_page_html(next_link)
         save_html_to_file(html_content, tmp_file_name)
         with open(tmp_file_name, 'r', encoding='utf-8') as file:
             soup = BeautifulSoup(file, 'html.parser')
+            
         next_link = get_next_link(soup)
-    
+        
+        create_result_html(tmp_file_name, title_name)
         if next_link is None:
             break
-        create_result_html(tmp_file_name, title_name)
-
+        #create_result_html(tmp_file_name, title_name)
+        
+        print(f"\npage {_ + 1}/{count_of_pgs}")
 finally:
     # Закрываем браузер после завершения всех операций
     driver.quit()
