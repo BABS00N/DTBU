@@ -14,4 +14,4 @@ The program downloads text, images and chapter titles from the RanobeLib website
 - Since the final file is not overwritten, but supplemented, you can simply specify the same file name when loading again and, as a link to the page, indicate the one on which the code stopped.
 - You can download different version of  [chromedriver](https://github.com/jsnjack/chromedriver), which will suit your chrome.
 
-### P.s.s. Perhaps in the future I'll update this program.
+### P.p.s. Perhaps in the future I'll update this program.
